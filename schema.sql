@@ -1,0 +1,16 @@
+DROP DATABASE IF EXISTS top_songsDB;
+CREATE DATABASE top_songsDB;
+USE top_songsDB;
+
+CREATE TABLE Top5000(
+id INT NOT NULL AUTO_INCREMENT,
+artist VARCHAR(32) NOT NULL,
+title VARCHAR(32) NOT NULL,
+year INT(8),
+raw_total DOUBLE,
+raw_usa DOUBLE,
+raw_uk DOUBLE,
+raw_eur DOUBLE,
+raw_row DOUBLE,
+PRIMARY KEY (id)
+)
