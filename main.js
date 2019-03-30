@@ -41,7 +41,10 @@ function findArtist() {
     .then(findArtist => {
       console.log("Searching '" + findArtist.artist + "'");
       connection.query(
-        "SELECT " + findArtist.artist + " FROM top5000",
+        "SELECT * FROM top5000 WHERE ?",
+        {
+          artist: findArtist.artist
+        },
         function(err, res) {
           if (err) throw err;
           // Log all results of the SELECT statement
