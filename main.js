@@ -55,6 +55,52 @@ function findArtist() {
     });
 }
 
+function findPopularArtist() {
+  connection.query(
+    "SELECT * FROM top5000 GROUP BY artist HAVING count(*) > 1",
+    function(err, res) {
+      if (err) throw err;
+      // Log all results of the SELECT statement
+      console.log(res);
+      connection.end();
+    }
+  );
+}
+
+function findRange() {
+  inquirer
+    .prompt([
+      {
+        type: "input",
+        name: "lower",
+        message: "Lowest Rank"
+      },
+      {
+        type: "input",
+        name: "upper",
+        message: "Highest Rank"
+      }
+    ])
+    .then(range => {
+      console.log("Searching from " + range.lower + "to " + range.upper);
+      connection.query(
+        "SELECT * FROM top5000 WHERE id BETWEEN ? AND ?",
+        {
+          id: range.lower
+        },
+        {
+          id: range.upper
+        },
+        function(err, res) {
+          if (err) throw err;
+          // Log all results of the SELECT statement
+          console.log(res);
+          connection.end();
+        }
+      );
+    });
+}
+
 function main() {
   inquirer
     .prompt([
@@ -72,17 +118,17 @@ function main() {
     ])
     .then(main => {
       if (main.mainSelect === "Find Artist") {
-        console.log("A1");
         findArtist();
       }
       if (main.mainSelect === "Find 'Popular' Artist") {
-        console.log("B2");
+        console.log("Searching artist's who appear more then once!");
+        findPopularArtist();
       }
       if (main.mainSelect === "Find Range") {
-        console.log("C3");
+        findRange();
       }
       if (main.mainSelect === "Find Song") {
-        console.log("D4");
+        console.log("Not Made");
       }
     });
 }
